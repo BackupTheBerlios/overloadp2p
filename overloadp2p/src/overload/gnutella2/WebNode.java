@@ -36,6 +36,8 @@ public class WebNode {
         m = p.matcher(path);
         if (m.matches())
             path = path.substring(0, path.lastIndexOf('/'));
+        if (path.contains("?"))
+            path = path.substring(0, path.indexOf('?'));
         this.url = "http://" + hostname + path;
         this.requestTime = requestTime;
     }
@@ -67,5 +69,9 @@ public class WebNode {
         if (!(o instanceof WebNode)) return false;
         WebNode n = (WebNode) o;
         return n.url.equals(url);
+    }
+    
+    public void updateRequestTime() {
+        requestTime = System.currentTimeMillis();
     }
 }

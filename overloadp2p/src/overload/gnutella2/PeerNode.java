@@ -66,4 +66,8 @@ public class PeerNode implements Serializable {
         PeerNode n = (PeerNode) o;
         return n.port == port && n.host.equals(host);
     }
+    
+    public String toString() {
+        return host + ":" + port;
+    }
 }
