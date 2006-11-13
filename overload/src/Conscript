@@ -1,5 +1,0 @@
-Import qw( BIN CONS );
-
-Program $CONS "app", "main.c";
-
-Install $CONS $BIN, "app";

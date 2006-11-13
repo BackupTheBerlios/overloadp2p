@@ -1,6 +1,0 @@
-Import qw( LIB INCLUDE CONS );
-
-Library $CONS "libstringutils.a", "stringutils.c";
-
-Install $CONS $LIB, "libstringutils.a";
-Install $CONS $INCLUDE, "stringutils.h";

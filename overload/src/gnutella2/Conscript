@@ -1,6 +1,0 @@
-Import qw( LIB INCLUDE CONS );
-
-Library $CONS 'libgnutella2.a', 'network_types.c';
-
-Install $CONS $LIB, 'libgnutella2.a';
-Install $CONS $INCLUDE, 'network_types.h';
