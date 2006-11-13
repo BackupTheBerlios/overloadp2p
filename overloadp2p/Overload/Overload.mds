@@ -1,0 +1,17 @@
+<Combine name="Overload" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="Overload" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="Overload" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <DeployTargets />
+  <StartMode startupentry="Overload" single="True">
+    <Execute type="None" entry="Overload" />
+  </StartMode>
+  <Entries>
+    <Entry filename="./Overload/Overload.mdp" />
+  </Entries>
+</Combine>
