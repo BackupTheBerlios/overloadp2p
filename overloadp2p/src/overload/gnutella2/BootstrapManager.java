@@ -23,6 +23,13 @@ public class BootstrapManager {
     private int maxPeerCacheSize = 500;
     private int maxWebCacheSize  = 150;
     private static BootstrapManager instance;
+    private final String[] defaultNodes = {
+        "http://gwcrab2.sarcastro.com:8002",
+        "http://silvers.servehttp.com/g2/bazooka.php",
+        "http://bazooka1.servehttp.com/g2/bazooka.php",
+        "http://g2.sbicomputing.com/g2/bazooka.php",
+        "http://g2.wow-toj.be/bazooka.php"
+    };
     
     /** Creates a new instance of BootstrapManager */
     private BootstrapManager() {
@@ -47,5 +54,4 @@ public class BootstrapManager {
         if (webCache.contains(n)) return;
         webCache.add(n);
     }
-    
 }
