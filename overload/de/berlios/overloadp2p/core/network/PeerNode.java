@@ -3,7 +3,7 @@ package de.berlios.overloadp2p.core.network;
 import java.io.Serializable;
 
 /**
- * Represents a participant of the Gnutella2 network.
+ * Represents a participant of the Gnutella network.
  * @author Dmitri Bachtin
  *
  */
@@ -12,12 +12,12 @@ public class PeerNode implements Serializable {
 	private String host;
 	private int port;
 	
-	private void init(String host, int port) throws NodeException {
+	protected void init(String host, int port) throws NodeException {
 		if (host == null)
 			throw new NodeException("Hostname is a null reference");
 		if (port < 1 || port > 65535)
 			throw new NodeException("Port is out of range");
-		if (host.length() < 3)
+		if (host.length() < 2)
 			throw new NodeException("Hostname is too short");
 		this.host = host.toLowerCase();
 		this.port = port;
@@ -56,25 +56,30 @@ public class PeerNode implements Serializable {
 		init(parts[0], port);
 	}
 
-	/**
-	 * PeerNode == PeerNode if Hosts and Ports are equal. HoST is same as hOSt.
-	 */
+	public int hashCode() {
+		final int PRIME = 31;
+		int result = 1;
+		result = PRIME * result + ((host == null) ? 0 : host.hashCode());
+		result = PRIME * result + port;
+		return result;
+	}
+
 	public boolean equals(Object obj) {
-		if (obj == this)
+		if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
 		if (!(obj instanceof PeerNode))
 			return false;
-		PeerNode n = (PeerNode) obj;
-		return n.port == this.port && n.host.equals(this.host);
-	}
-
-	/**
-	 * returns host.hashCode() ^ port
-	 */
-	public int hashCode() {
-		return this.host.hashCode() ^ this.port;
+		final PeerNode other = (PeerNode) obj;
+		if (host == null) {
+			if (other.host != null)
+				return false;
+		} else if (!host.equals(other.host))
+			return false;
+		if (port != other.port)
+			return false;
+		return true;
 	}
 
 	/**
