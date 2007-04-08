@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Maintains caches of PeerNodes and WebNodes.
@@ -14,9 +15,9 @@ import java.util.ArrayList;
  * @author Dmitri Bachtin
  */
 public final class NodeCache {
-	private final int MAX_PEERCACHE_SIZE = 800;
+	public static final int MAX_PEERCACHE_SIZE = 800;
 
-	private final int MAX_WEBCACHE_SIZE = 150;
+	public static final int MAX_WEBCACHE_SIZE = 150;
 
 	private ArrayList<PeerNode> peerCache = new ArrayList<PeerNode>();
 
@@ -65,6 +66,7 @@ public final class NodeCache {
 		if (webCache.contains(n))
 			return;
 		webCache.add(n);
+		Collections.sort(webCache);
 	}
 
 	public synchronized void addPeerNode(String host, int port) {
@@ -155,5 +157,36 @@ public final class NodeCache {
 		for (WebNode n : webCache)
 			out.write(n.toString() + '\n');
 		out.close();
+	}
+	
+	/**
+	 * Provides a requestable web node
+	 * @return a requestable web node
+	 * @throws NodeException if web cache is empty or the oldest node
+	 * had been requested less than one hour ago.
+	 */
+	public synchronized WebNode getWebNode() throws NodeException {
+		if (webCache.size() == 0)
+			throw new NodeException("Empty web node cache");
+		WebNode n = webCache.get(0);
+		if (System.currentTimeMillis() - n.getLastRequestTime() < 3600000)
+			throw new NodeException("All nodes got requested too early");
+		return n;
+	}
+	
+	public synchronized PeerNode getPeerNode() throws NodeException {
+		if (peerCache.size() == 0) {
+			// TODO: request nodes from a web node
+		}
+		
+		return peerCache.remove(0);
+	}
+	
+	public synchronized int getWebCacheSize() {
+		return this.webCache.size();
+	}
+	
+	public synchronized int getPeerCacheSize() {
+		return this.peerCache.size();
 	}
 }
