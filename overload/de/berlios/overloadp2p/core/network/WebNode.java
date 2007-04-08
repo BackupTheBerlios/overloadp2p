@@ -14,7 +14,7 @@ import java.net.URL;
 public class WebNode implements Serializable, Comparable<WebNode> {
 	private static final long serialVersionUID = -6097444455047165661L;
 	private String url;
-	private long lastRequestTime;
+	private volatile long lastRequestTime;
 	
 	protected void init(String url, long lastRequestTime) throws NodeException {
 		if (url == null)
@@ -137,4 +137,10 @@ public class WebNode implements Serializable, Comparable<WebNode> {
 		return this.url + '@' + this.lastRequestTime;
 	}
 	
+	/**
+	 * Sets lastRequestTime of the node to current time.
+	 */
+	public void updateRequestTime() {
+		this.lastRequestTime = System.currentTimeMillis();
+	}
 }
