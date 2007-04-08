@@ -130,4 +130,11 @@ public class WebNode implements Serializable, Comparable<WebNode> {
 		return 0;
 	}
 	
+	/**
+	 * @return URL@requestTime
+	 */
+	public String toString() {
+		return this.url + '@' + this.lastRequestTime;
+	}
+	
 }
