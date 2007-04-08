@@ -1,5 +1,11 @@
 package de.berlios.overloadp2p.core.network;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -79,12 +85,30 @@ public final class NodeCache {
 		}
 	}
 
+	/**
+	 * Adds a node as plain URL or formatted as URL@requesttime to the internal cache.
+	 * @param url
+	 */
 	public synchronized void addWebNode(String url) {
-		try {
-			WebNode n = new WebNode(url);
-			addWebNode(n);
-		} catch (NodeException e) {
+		if (url == null)
 			return;
+		if (url.contains("@")) {
+			String[] parts = url.split("@");
+			if (parts.length != 2)
+				return;
+			try {
+				long lastRequestTime = Long.parseLong(parts[1]);
+				addWebNode(parts[0], lastRequestTime);
+			} catch(NumberFormatException e) {
+				return;
+			}
+		} else {
+			try {
+				WebNode n = new WebNode(url);
+				addWebNode(n);
+			} catch (NodeException e) {
+				return;
+			}
 		}
 	}
 
@@ -95,5 +119,41 @@ public final class NodeCache {
 		} catch (NodeException e) {
 			return;
 		}
+	}
+	
+	/**
+	 * Loads a list of peer node addresses from a file ignoring all invalid entries.
+	 * @param f File to read from
+	 * @throws IOException
+	 */
+	public void loadPeerCache(File f) throws IOException {
+		BufferedReader in = new BufferedReader(new FileReader(f));
+		String line;
+		while((line = in.readLine()) != null)
+			addPeerNode(line);
+		in.close();
+	}
+	
+	public void loadWebCache(File f) throws IOException {
+		BufferedReader in = new BufferedReader(new FileReader(f));
+		String line;
+		while((line = in.readLine()) != null) {
+			addWebNode(line);
+		}
+		in.close();
+	}
+	
+	public void savePeerCache(File f) throws IOException {
+		BufferedWriter out = new BufferedWriter(new FileWriter(f));
+		for (PeerNode n : peerCache)
+			out.write(n.toString() + '\n');
+		out.close();
+	}
+	
+	public void saveWebCache(File f) throws IOException {
+		BufferedWriter out = new BufferedWriter(new FileWriter(f));
+		for (WebNode n : webCache)
+			out.write(n.toString() + '\n');
+		out.close();
 	}
 }
