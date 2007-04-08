@@ -3,8 +3,6 @@ package de.berlios.overloadp2p.core.network;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Represents a Gnutella GWebCache node. 
